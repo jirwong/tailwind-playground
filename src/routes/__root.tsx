@@ -30,11 +30,11 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en">
+		<html lang="en" className="bg-neutral-800 text-stone-100">
 			<head>
 				<HeadContent />
 			</head>
-			<body>
+			<body className="bg-neutral-800 text-stone-100">
 				{children}
 				<TanStackDevtools
 					config={{

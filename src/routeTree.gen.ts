@@ -10,33 +10,80 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppRouteImport } from './routes/app'
+import { Route as ColorSchemeRouteImport } from './routes/color-scheme'
+import { Route as ContainerTestRouteImport } from './routes/container-test'
+import { Route as ColorsPaletteRouteImport } from './routes/colors/palette'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ColorSchemeRoute = ColorSchemeRouteImport.update({
+  id: '/color-scheme',
+  path: '/color-scheme',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContainerTestRoute = ContainerTestRouteImport.update({
+  id: '/container-test',
+  path: '/container-test',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ColorsPaletteRoute = ColorsPaletteRouteImport.update({
+  id: '/colors/palette',
+  path: '/colors/palette',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRoute
+  '/color-scheme': typeof ColorSchemeRoute
+  '/container-test': typeof ContainerTestRoute
+  '/colors/palette': typeof ColorsPaletteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app': typeof AppRoute
+  '/color-scheme': typeof ColorSchemeRoute
+  '/container-test': typeof ContainerTestRoute
+  '/colors/palette': typeof ColorsPaletteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app': typeof AppRoute
+  '/color-scheme': typeof ColorSchemeRoute
+  '/container-test': typeof ContainerTestRoute
+  '/colors/palette': typeof ColorsPaletteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    '/' | '/app' | '/color-scheme' | '/container-test' | '/colors/palette'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/app' | '/color-scheme' | '/container-test' | '/colors/palette'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/color-scheme'
+    | '/container-test'
+    | '/colors/palette'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRoute
+  ColorSchemeRoute: typeof ColorSchemeRoute
+  ContainerTestRoute: typeof ContainerTestRoute
+  ColorsPaletteRoute: typeof ColorsPaletteRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,12 +95,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/color-scheme': {
+      id: '/color-scheme'
+      path: '/color-scheme'
+      fullPath: '/color-scheme'
+      preLoaderRoute: typeof ColorSchemeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/container-test': {
+      id: '/container-test'
+      path: '/container-test'
+      fullPath: '/container-test'
+      preLoaderRoute: typeof ContainerTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/colors/palette': {
+      id: '/colors/palette'
+      path: '/colors/palette'
+      fullPath: '/colors/palette'
+      preLoaderRoute: typeof ColorsPaletteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRoute,
+  ColorSchemeRoute: ColorSchemeRoute,
+  ContainerTestRoute: ContainerTestRoute,
+  ColorsPaletteRoute: ColorsPaletteRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
