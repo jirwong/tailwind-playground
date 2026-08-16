@@ -9,129 +9,115 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AppRouteImport } from './routes/app'
-import { Route as ColorSchemeRouteImport } from './routes/color-scheme'
-import { Route as ContainerTestRouteImport } from './routes/container-test'
-import { Route as ColorsPaletteRouteImport } from './routes/colors/palette'
+import { Route as LayoutRouteImport } from './routes/_layout'
+import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
+import { Route as LayoutColorSchemeRouteImport } from './routes/_layout/color-scheme'
+import { Route as LayoutColorsPaletteRouteImport } from './routes/_layout/colors/palette'
 
-const IndexRoute = IndexRouteImport.update({
+const LayoutRoute = LayoutRouteImport.update({
+  id: '/_layout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LayoutIndexRoute = LayoutIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => LayoutRoute,
 } as any)
-const AppRoute = AppRouteImport.update({
-  id: '/app',
-  path: '/app',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ColorSchemeRoute = ColorSchemeRouteImport.update({
+const LayoutColorSchemeRoute = LayoutColorSchemeRouteImport.update({
   id: '/color-scheme',
   path: '/color-scheme',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => LayoutRoute,
 } as any)
-const ContainerTestRoute = ContainerTestRouteImport.update({
-  id: '/container-test',
-  path: '/container-test',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ColorsPaletteRoute = ColorsPaletteRouteImport.update({
+const LayoutColorsPaletteRoute = LayoutColorsPaletteRouteImport.update({
   id: '/colors/palette',
   path: '/colors/palette',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => LayoutRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/app': typeof AppRoute
-  '/color-scheme': typeof ColorSchemeRoute
-  '/container-test': typeof ContainerTestRoute
-  '/colors/palette': typeof ColorsPaletteRoute
+  '/': typeof LayoutIndexRoute
+  '/color-scheme': typeof LayoutColorSchemeRoute
+  '/colors/palette': typeof LayoutColorsPaletteRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/app': typeof AppRoute
-  '/color-scheme': typeof ColorSchemeRoute
-  '/container-test': typeof ContainerTestRoute
-  '/colors/palette': typeof ColorsPaletteRoute
+  '/color-scheme': typeof LayoutColorSchemeRoute
+  '/': typeof LayoutIndexRoute
+  '/colors/palette': typeof LayoutColorsPaletteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/app': typeof AppRoute
-  '/color-scheme': typeof ColorSchemeRoute
-  '/container-test': typeof ContainerTestRoute
-  '/colors/palette': typeof ColorsPaletteRoute
+  '/_layout': typeof LayoutRouteWithChildren
+  '/_layout/color-scheme': typeof LayoutColorSchemeRoute
+  '/_layout/': typeof LayoutIndexRoute
+  '/_layout/colors/palette': typeof LayoutColorsPaletteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    '/' | '/app' | '/color-scheme' | '/container-test' | '/colors/palette'
+  fullPaths: '/' | '/color-scheme' | '/colors/palette'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app' | '/color-scheme' | '/container-test' | '/colors/palette'
+  to: '/color-scheme' | '/' | '/colors/palette'
   id:
     | '__root__'
-    | '/'
-    | '/app'
-    | '/color-scheme'
-    | '/container-test'
-    | '/colors/palette'
+    | '/_layout'
+    | '/_layout/color-scheme'
+    | '/_layout/'
+    | '/_layout/colors/palette'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AppRoute: typeof AppRoute
-  ColorSchemeRoute: typeof ColorSchemeRoute
-  ContainerTestRoute: typeof ContainerTestRoute
-  ColorsPaletteRoute: typeof ColorsPaletteRoute
+  LayoutRoute: typeof LayoutRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_layout': {
+      id: '/_layout'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof LayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_layout/': {
+      id: '/_layout/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof LayoutIndexRouteImport
+      parentRoute: typeof LayoutRoute
     }
-    '/app': {
-      id: '/app'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AppRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/color-scheme': {
-      id: '/color-scheme'
+    '/_layout/color-scheme': {
+      id: '/_layout/color-scheme'
       path: '/color-scheme'
       fullPath: '/color-scheme'
-      preLoaderRoute: typeof ColorSchemeRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof LayoutColorSchemeRouteImport
+      parentRoute: typeof LayoutRoute
     }
-    '/container-test': {
-      id: '/container-test'
-      path: '/container-test'
-      fullPath: '/container-test'
-      preLoaderRoute: typeof ContainerTestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/colors/palette': {
-      id: '/colors/palette'
+    '/_layout/colors/palette': {
+      id: '/_layout/colors/palette'
       path: '/colors/palette'
       fullPath: '/colors/palette'
-      preLoaderRoute: typeof ColorsPaletteRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof LayoutColorsPaletteRouteImport
+      parentRoute: typeof LayoutRoute
     }
   }
 }
 
+interface LayoutRouteChildren {
+  LayoutColorSchemeRoute: typeof LayoutColorSchemeRoute
+  LayoutIndexRoute: typeof LayoutIndexRoute
+  LayoutColorsPaletteRoute: typeof LayoutColorsPaletteRoute
+}
+
+const LayoutRouteChildren: LayoutRouteChildren = {
+  LayoutColorSchemeRoute: LayoutColorSchemeRoute,
+  LayoutIndexRoute: LayoutIndexRoute,
+  LayoutColorsPaletteRoute: LayoutColorsPaletteRoute,
+}
+
+const LayoutRouteWithChildren =
+  LayoutRoute._addFileChildren(LayoutRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AppRoute: AppRoute,
-  ColorSchemeRoute: ColorSchemeRoute,
-  ContainerTestRoute: ContainerTestRoute,
-  ColorsPaletteRoute: ColorsPaletteRoute,
+  LayoutRoute: LayoutRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

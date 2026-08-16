@@ -30,11 +30,15 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en" className="bg-neutral-800 text-stone-100">
+		<html lang="en" className="min-h-screen text-stone-100 antialiased">
 			<head>
 				<HeadContent />
 			</head>
-			<body className="bg-neutral-800 text-stone-100">
+			<body className="min-h-screen text-stone-100 antialiased">
+				<div
+					className="pointer-events-none fixed inset-0 -z-10 bg-gradient-to-br from-slate-950 via-neutral-900 to-slate-900"
+					aria-hidden="true"
+				/>
 				{children}
 				<TanStackDevtools
 					config={{
