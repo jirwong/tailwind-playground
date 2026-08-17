@@ -10,7 +10,9 @@
     "generate-routes": "tsr generate",
     "build": "vite build",
     "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
     "format": "biome format",
+    "format:check": "biome ci",
     "lint": "biome lint",
     "check": "biome check"
   },
